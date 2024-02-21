@@ -131,7 +131,7 @@ public class VeggieController {
         }
         else
         {
-            return new ResponseEntity<String>("Update Unsuccessful ", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<String>("Update Unsuccessful ", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -169,7 +169,7 @@ public class VeggieController {
         }
         else
         {
-            return new ResponseEntity<String>("Delete Unsuccessful ", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<String>("Delete Unsuccessful ", HttpStatus.NOT_FOUND);
         }
     }
 
