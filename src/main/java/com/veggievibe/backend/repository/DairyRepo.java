@@ -23,4 +23,6 @@ public interface DairyRepo extends JpaRepository<DairyDetails, Integer>{
 
     @Query("SELECT d FROM DairyDetails d ORDER BY d.name DESC")
     public List<DairyDetails> sortByNameDesc();
+
+    
 }

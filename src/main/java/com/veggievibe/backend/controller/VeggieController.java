@@ -3,6 +3,7 @@ package com.veggievibe.backend.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,14 +24,14 @@ public class VeggieController {
     @Autowired
     private VeggieServices veggieServices;
 
-    @PostMapping("/addVegetable")
+    @PostMapping("/addVeggie")
     public VegetableDetails addVegetable(@RequestBody VegetableDetails vegetableDetails)
     {
         veggieServices.saveVegeteable(vegetableDetails);
         return vegetableDetails;
     }
 
-    @PostMapping("/addFruit")
+    @PostMapping("/addFruite")
     public FruitDetails addFruit(@RequestBody FruitDetails fruitDetails)
     {
         veggieServices.saveFruits(fruitDetails);
@@ -44,13 +45,13 @@ public class VeggieController {
         return dairyDetails;
     }
 
-    @GetMapping("/getVegetables")
+    @GetMapping("/getVeggies")
     public List<VegetableDetails> getVeggie()
     {
         return veggieServices.getVegetables();
     }
 
-    @GetMapping("/getFruits")
+    @GetMapping("/getFruites")
     public List<FruitDetails> getFruite()
     {
         return veggieServices.getFruits();
@@ -74,9 +75,9 @@ public class VeggieController {
     }
 
     @GetMapping("/dairy/{id}")
-    public FruitDetails searchDairyById(@PathVariable int id)
+    public DairyDetails searchDairyById(@PathVariable int id)
     {
-        return veggieServices.searchFruiteById(id);
+        return veggieServices.searchDairyById(id);
     }
 
     @GetMapping("/veggieByName/{name}")
@@ -85,7 +86,7 @@ public class VeggieController {
         List<VegetableDetails> vegetables = veggieServices.searchVeggieByName(name);
         if(vegetables.isEmpty())
         {
-            return new ResponseEntity<List<VegetableDetails>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<VegetableDetails>>(HttpStatus.NOT_FOUND);
         }
         else
         {
@@ -99,7 +100,7 @@ public class VeggieController {
         List<FruitDetails> fruits = veggieServices.searchFruiteByName(name);
         if(fruits.isEmpty())
         {
-            return new ResponseEntity<List<FruitDetails>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<FruitDetails>>(HttpStatus.NOT_FOUND);
         }
         else
         {
@@ -113,7 +114,7 @@ public class VeggieController {
         List<DairyDetails> dairy = veggieServices.searchDairyDetails(name);
         if(dairy.isEmpty())
         {
-            return new ResponseEntity<List<DairyDetails>>(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<List<DairyDetails>>(HttpStatus.NOT_FOUND);
         }
         else
         {
@@ -134,37 +135,100 @@ public class VeggieController {
         }
     }
 
-    @GetMapping("/sortVeggieAsc")
+    @PutMapping("/editFruite/{id}")
+    public ResponseEntity<String> editFruite(@PathVariable int id,@RequestBody FruitDetails fruitDetails)
+    {
+        if(veggieServices.updateFruite(id, fruitDetails))
+        {
+            return new ResponseEntity<String>("Update Successful", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<String>("Update Unsuccessful", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("editDairy/{id}")
+    public ResponseEntity<String> editDairy(@PathVariable int id,@RequestBody DairyDetails dairyDetails)
+    {
+        if(veggieServices.updateDairy(id, dairyDetails))
+        {
+            return new ResponseEntity<String>("Update Successful", HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<String>("Update Unsuccessful", HttpStatus.NOT_FOUND);
+        }
+    } 
+
+    @DeleteMapping("/deleteVeggie/{id}")
+    public ResponseEntity<String> deleteVeggie(@PathVariable int id)
+    {
+        if(veggieServices.deleteVeggie(id))
+        {
+            return new ResponseEntity<String>("Delete Successful",HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<String>("Delete Unsuccessful ", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping("/deleteFruite/{id}")
+    public ResponseEntity<String> deleteFruite(@PathVariable int id)
+    {
+        if(veggieServices.deleteFruite(id))
+        {
+            return new ResponseEntity<String>("Delete Successful", HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<String>("Delete Unsuccessful", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("deleteDairy/{id}")
+    public ResponseEntity<String> deleteDairy(@PathVariable int id)
+    {
+        if(veggieServices.deleteDairy(id))
+        {
+            return new ResponseEntity<String>("Delete Successful", HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<String>("Delete Unsuccessful", HttpStatus.NOT_FOUND);
+        }
+    } 
+
+    @GetMapping("/sortVeggieByPriceAsc")
     public List<VegetableDetails> sortVeggieByPriceAsc()
     {
         return veggieServices.SortVeggieByPriceAsc();
     }
 
-    @GetMapping("/sortVeggieDesc")
+    @GetMapping("/sortVeggieByPriceDesc")
     public List<VegetableDetails> sortVeggieByPriceDesc()
     {
         return veggieServices.SortVeggieByPriceDesc();
     }
 
-    @GetMapping("/sortFruiteAsc")
+    @GetMapping("/sortFruiteByPriceAsc")
     public List<FruitDetails> sortFruiteByPriceAsc()
     {
         return veggieServices.SortFruiteByPriceAsc();
     }
 
-    @GetMapping("/sortFruiteDesc")
+    @GetMapping("/sortFruiteByPriceDesc")
     public List<FruitDetails> sortFruiteByPriceDesc()
     {
         return veggieServices.SortFruiteByPriceDesc();
     }
 
-    @GetMapping("/sortDairyAsc")
+    @GetMapping("/sortDairyByPriceAsc")
     public List<DairyDetails> sortDairyByPriceAsc()
     {
         return veggieServices.SortDairyByPriceAsc();
     }
 
-    @GetMapping("/sortDairyDesc")
+    @GetMapping("/sortDairyByPriceDesc")
     public List<DairyDetails> sortDairyByPriceDesc()
     {
         return veggieServices.SortDairyByPriceDesc();

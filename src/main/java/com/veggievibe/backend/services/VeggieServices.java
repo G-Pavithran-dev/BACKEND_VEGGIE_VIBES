@@ -89,9 +89,84 @@ public class VeggieServices {
     {
         if(this.searchVeggieById(id) == null)
             return false;
-            
+
         try{
             veggieRepo.save(vegetableDetails);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    public Boolean updateFruite(int id, FruitDetails fruitDetails)
+    {
+        if(this.searchFruiteById(id) == null)
+            return false;
+
+        try{
+            fruiteRepo.save(fruitDetails);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    public Boolean updateDairy(int id, DairyDetails dairyDetails)
+    {
+        if(this.searchDairyById(id) == null)
+            return false;
+
+        try{
+            dairyRepo.save(dairyDetails);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    public Boolean deleteVeggie(int id)
+    {
+        if(this.searchVeggieById(id) == null)
+            return false;
+
+        try{
+            veggieRepo.deleteById(id);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    public Boolean deleteFruite(int id)
+    {
+        if(this.searchFruiteById(id) == null)
+            return false;
+
+        try{
+            fruiteRepo.deleteById(id);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    public Boolean deleteDairy(int id)
+    {
+        if(this.searchDairyById(id) == null)
+            return false;
+
+        try{
+            dairyRepo.deleteById(id);
             return true;
         }
         catch(Exception e)
